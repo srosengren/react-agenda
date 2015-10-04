@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>React Agenda</title>
+	<link href="agenda.css" rel="stylesheet" />
+</head>
+<body>
+
+	<div id="mount"></div>
+
+	<script src="react.js"></script>
+	<script src="browser.js"></script>
+	<script src="Agenda.jsx" type="text/babel">
+	</script>
+	<script>
+		setTimeout(function () {
+
+			var events = [
+				{ title: 'My thing', start: new Date() },
+				{ title: 'My thing 2', start: new Date() },
+				{ title: 'My thing 3', start: new Date() }
+			]
+			events[1].start.setDate(events[1].start.getDate() + 1);
+			events[1].start.setHours(events[1].start.getHours() + 1);
+			events[2].start.setDate(events[2].start.getDate() + 2);
+
+			React.render(React.createElement(Agenda, { events: events }), document.getElementById('mount'));
+		}, 100);
+	</script>
+</body>
+</html>
