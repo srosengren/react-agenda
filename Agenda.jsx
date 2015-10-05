@@ -22,6 +22,11 @@ window.Agenda = React.createClass({
 		})[0];
 		if (this.props.eventDrop)
 			this.props.eventDrop(start, event);
+		else {
+			//Default to mutate the original event object and rerender
+			event.start = start;
+			this.forceUpdate();
+		}
 	},
 	renderEvent: function(e){
 		return (

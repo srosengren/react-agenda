@@ -26,7 +26,8 @@
 			events[2].start.setDate(events[2].start.getDate() + 2);
 
 			var eventDrop = function (start, event) {
-				console.log('event: ' + event.id + ' moved to ' + start.toString());
+				event.start = start;
+				React.render(React.createElement(Agenda, { events: events, eventDrop: eventDrop }), document.getElementById('mount'));
 			};
 
 			React.render(React.createElement(Agenda, { events: events,eventDrop: eventDrop }), document.getElementById('mount'));
