@@ -2,7 +2,8 @@
 <html>
 <head>
 	<title>React Agenda</title>
-	<link href="agenda.css" rel="stylesheet" />
+	<link href="agenda-layout.css" rel="stylesheet" />
+	<link href="agenda-style.css" rel="stylesheet" />
 </head>
 <body>
 
@@ -16,15 +17,19 @@
 		setTimeout(function () {
 
 			var events = [
-				{ title: 'My thing', start: new Date() },
-				{ title: 'My thing 2', start: new Date() },
-				{ title: 'My thing 3', start: new Date() }
+				{ id: 1, title: 'My thing', start: new Date() },
+				{ id: 2, title: 'My thing 2', start: new Date() },
+				{ id: 3, title: 'My thing 3', start: new Date() }
 			]
 			events[1].start.setDate(events[1].start.getDate() + 1);
 			events[1].start.setHours(events[1].start.getHours() + 1);
 			events[2].start.setDate(events[2].start.getDate() + 2);
 
-			React.render(React.createElement(Agenda, { events: events }), document.getElementById('mount'));
+			var eventDrop = function (start, event) {
+				console.log('event: ' + event.id + ' moved to ' + start.toString());
+			};
+
+			React.render(React.createElement(Agenda, { events: events,eventDrop: eventDrop }), document.getElementById('mount'));
 		}, 100);
 	</script>
 </body>

@@ -1,0 +1,8 @@
+﻿.agenda__cell--date {
+	background-color: #ececec;
+	border: 1px solid white;
+}
+
+.agenda__event {
+	background: lightblue;
+}

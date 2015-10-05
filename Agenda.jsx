@@ -3,12 +3,36 @@ var getDateKey = function (date) {
 }
 
 window.Agenda = React.createClass({
+	ieMouseMove: function (e) {
+		//ie9 only supports dragdrop on anchors and imgs, but we can trigger it manually.
+		if (e.target.dragDrop && window.event.button == 1)
+			e.target.dragDrop();
+	},
+	eventDragStart: function(agendaEvent,DOMEvent){
+		DOMEvent.dataTransfer.effectAllowed = "move";
+		DOMEvent.dataTransfer.setData("text", '' + agendaEvent.id);
+	},
+	dragOver: function(e){
+		e.preventDefault();
+	},
+	drop: function (start, DOMEvent) {
+		var eventId = DOMEvent.dataTransfer.getData("text");
+		var event = (this.props.events || []).filter(function (event) {
+			return event.id + '' === eventId;
+		})[0];
+		if (this.props.eventDrop)
+			this.props.eventDrop(start, event);
+	},
 	renderEvent: function(e){
-		return <span>{e.title}</span>
+		return (
+			<div className="agenda__event" title={e.title} draggable="true" onDragStart={this.eventDragStart.bind(null,e)} onMouseMove={this.ieMouseMove}>
+				<span>{e.title}</span>
+			</div>
+		)
 	},
 	renderRowDate: function(col){
 		return (
-			<div key={col.start.toString()} className="agenda__cell agenda__cell--date">
+			<div key={col.start.toString()} className="agenda__cell agenda__cell--date" onDragOver={this.dragOver} onDrop={this.drop.bind(null,col.start)}>
 				{col.events.map(this.renderEvent)}
 			</div>
 		)
