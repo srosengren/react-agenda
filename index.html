@@ -25,12 +25,11 @@
 			events[1].start.setHours(events[1].start.getHours() + 1);
 			events[2].start.setDate(events[2].start.getDate() + 2);
 
-			var eventDrop = function (start, event) {
-				event.start = start;
-				React.render(React.createElement(Agenda, { events: events, eventDrop: eventDrop }), document.getElementById('mount'));
-			};
-
-			React.render(React.createElement(Agenda, { events: events,eventDrop: eventDrop }), document.getElementById('mount'));
+			React.render(React.createElement(Agenda, {
+				events: events,
+				start: new Date(),
+				noOfDays: 5
+			}), document.getElementById('mount'));
 		}, 100);
 	</script>
 </body>
