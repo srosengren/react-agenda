@@ -5,7 +5,8 @@ var getDateKey = function (date) {
 var getDefaultProps = function () {
 	return {
 		start: new Date(),
-		noOfDays: 3
+		noOfDays: 3,
+		snapDuration: 30
 	}
 }
 var mergeProps = function (onto, from) {
@@ -88,9 +89,10 @@ window.Agenda = React.createClass({
 			dates.push(new Date(props.start.getFullYear(), props.start.getMonth(), props.start.getDate() + i));
 
 		var rows = [];
-		for (var i = 0; i <= 48; i++) {
-			var hour = Math.floor(i / 2);
-			var minutes = i % 2 * 30;
+		var noOfSnaps = 24 * 60 / props.snapDuration; //Hours in a day * minutes in an hour / snapDuration in minutes
+		for (var i = 0; i < noOfSnaps; i++) { //Not <= since the last snap would be the first in the next day
+			var hour = Math.floor(i / (60 / props.snapDuration)); //snap / 60 minutes in an hour / snapDuration in minutes
+			var minutes = i % (60 / props.snapDuration) * props.snapDuration;
 			var row = {
 				step: i,
 				hour: hour,
@@ -98,7 +100,7 @@ window.Agenda = React.createClass({
 				cols: dates.map(function (date) {
 					var events = eventsByDate[getDateKey(date)];
 					var spanStart = new Date(date.getFullYear(), date.getMonth(), date.getDate(), hour, minutes);
-					var spanEnd = new Date(date.getFullYear(), date.getMonth(), date.getDate(), hour, minutes + 30 /*step diff*/);
+					var spanEnd = new Date(date.getFullYear(), date.getMonth(), date.getDate(), hour, minutes + props.snapDuration /*step diff*/);
 					return {
 						start: spanStart,
 						events: (events || []).filter(function (e) {
